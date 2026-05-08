@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>FR LEAKS | ARCHIVES</title>
+    <link rel="stylesheet" href="/public/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <nav class="navbar">
+        <div class="logo">FR LEAKS</div>
+        <div class="nav-links">
+            <a href="#archives">ARCHIVES</a>
+            <a href="/admin">PANEL ADMIN</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1 class="glitch">FR LEAKS</h1>
+        <p>BASE DE DONNÉES EN ACCÈS LIBRE</p>
+    </header>
+
+    <section id="archives" class="file-grid"></section>
+
+    <script>
+        async function loadFiles() {
+            const res = await fetch('/api/files');
+            const files = await res.json();
+            const container = document.getElementById('archives');
+            container.innerHTML = files.map(f => `
+                <div class="file-card">
+                    <div class="badge">${f.category.toUpperCase()}</div>
+                    <h3>${f.name}</h3>
+                    <p>${f.description}</p>
+                    <button onclick="window.location.href='/auth/discord'" class="btn-dl">TÉLÉCHARGER</button>
+                </div>
+            `).join('');
+        }
+        loadFiles();
+    </script>
+</body>
+</html>

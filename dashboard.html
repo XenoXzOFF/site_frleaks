@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>DB - FR LEAKS</title>
+    <link rel="stylesheet" href="public/style.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="logo">FR LEAKS</div>
+        <ul>
+            <li onclick="filter('all')">TOUT</li>
+            <li onclick="filter('scripts')">SCRIPTS</li>
+            <li onclick="filter('assets')">ASSETS</li>
+            <li onclick="filter('vip')" class="vip-txt">ZONE VIP</li>
+        </ul>
+    </nav>
+    <div class="main-content">
+        <header class="top-bar">
+            <span id="user-welcome">BIENVENUE, AGENT</span>
+            <span id="status">SYSTÈME OPÉRATIONNEL</span>
+        </header>
+        <div class="file-grid" id="file-container">
+        </div>
+    </div>
+    <script>
+        async function loadFiles() {
+            const res = await fetch('/api/files');
+            const files = await res.json();
+            const container = document.getElementById('file-container');
+            container.innerHTML = files.map(f => `
+                <div class="file-card ${f.category}">
+                    <h3>${f.name}</h3>
+                    <p>${f.description}</p>
+                    <button onclick="generateLink('${f.id}')">GÉNÉRER CODE</button>
+                </div>
+            `).join('');
+        }
+        async function generateLink(id) {
+            const res = await fetch(\`/api/download/\${id}\`);
+            const data = await res.json();
+            alert("Code temporaire : " + data.code);
+        }
+        loadFiles();
+    </script>
+</body>
+</html>

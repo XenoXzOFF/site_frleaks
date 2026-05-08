@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>ADMIN | FR LEAKS</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body class="admin-body">
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <h2>FR LEAKS ADMIN</h2>
+            <p>Gestion des fichiers</p>
+            <a href="/" style="color:white; text-decoration:none;">← Retour Site</a>
+        </aside>
+        
+        <main class="admin-main">
+            <h3>AJOUTER UN LEAK</h3>
+            <div class="card" style="text-align:left;">
+                <input type="text" id="name" placeholder="Nom du fichier">
+                <select id="category">
+                    <option value="scripts">SCRIPTS</option>
+                    <option value="assets">ASSETS</option>
+                    <option value="vip">VIP</option>
+                </select>
+                <textarea id="desc" placeholder="Description"></textarea>
+                <button onclick="addFile()" class="btn-dl">PUBLIER SUR LE SITE</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        async function addFile() {
+            const data = {
+                name: document.getElementById('name').value,
+                category: document.getElementById('category').value,
+                description: document.getElementById('desc').value
+            };
+            await fetch('/api/admin/add', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            alert('Fichier ajouté !');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
